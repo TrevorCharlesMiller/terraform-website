@@ -6,4 +6,3 @@ resource "cloudflare_record" "website" {
   type    = "CNAME"
   proxied = true
 }
-

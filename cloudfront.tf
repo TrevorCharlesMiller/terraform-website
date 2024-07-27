@@ -16,21 +16,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     }
   }
 
-  origin {
-    domain_name = replace(var.public_api_gw_deployment_invoke_url, "/^https?://([^/]*).*/", "$1")
-    origin_id   = "public_api"
-    origin_path = "/production"
-
-    custom_origin_config {
-      http_port              = 80
-      https_port             = 443
-      origin_protocol_policy = "https-only"
-      origin_ssl_protocols   = ["TLSv1.2"]
-    }
-  }
-
-
-  web_acl_id = var.web_acl_id
   aliases = var.aliases
 
   enabled             = true
@@ -68,27 +53,6 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     min_ttl                = var.min_ttl
     default_ttl            = var.default_ttl
     max_ttl                = var.max_ttl
-  }
-
-  ordered_cache_behavior {
-    path_pattern     = "/api*"
-    allowed_methods  = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
-    cached_methods   = ["HEAD", "GET", "OPTIONS"]
-    target_origin_id = "public_api"
-
-    forwarded_values {
-      query_string = true
-      headers      = ["Origin"]
-      cookies {
-        forward = "all"
-      }
-    }
-
-    min_ttl                = var.min_ttl
-    default_ttl            = var.default_ttl
-    max_ttl                = var.max_ttl
-    compress               = true
-    viewer_protocol_policy = "redirect-to-https"
   }
 
   price_class = "PriceClass_All"
