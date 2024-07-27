@@ -38,7 +38,3 @@ variable "default_ttl" {
 variable "max_ttl" {
     description = "Maximum TTL in seconds for the cloudfront cache"
 }
-
-variable "public_api_gw_deployment_invoke_url" {
-    description = "API Gateway invoke URL used as cloudfront origin mapped to /api path"
-}
